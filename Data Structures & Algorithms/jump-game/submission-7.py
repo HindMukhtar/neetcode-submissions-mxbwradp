@@ -9,14 +9,12 @@ class Solution:
                 return True
             if nums[i] == 0: 
                 return False 
-                
+
             ans = False 
             
             for j in range(1,nums[i]+1): 
                 ans = ans or dfs(i+j)
-
             memo[i] = ans 
-
             return memo[i]
 
         return dfs(0)
