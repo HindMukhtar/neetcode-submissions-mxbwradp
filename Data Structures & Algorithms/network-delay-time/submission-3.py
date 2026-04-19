@@ -1,0 +1,53 @@
+class Solution:
+    def old(): 
+        adj = defaultdict(list)
+        weights = {}
+
+        for u,v,w in times: 
+            adj[u].append(v)
+            weights[(u,v)] = w
+        
+        min_heap = [(0, k)] 
+        heapq.heapify(min_heap)
+        visited = [False]*n 
+
+        while min_heap: 
+            time, node = heapq.heappop(min_heap)
+            if visited[node-1]: 
+                continue
+            visited[node-1] = True 
+            if all(visited): 
+                return time 
+            for nei in adj[node]: 
+                if not visited[nei-1]: 
+                    heapq.heappush(min_heap, (time+weights[(node, nei)], nei))
+        
+        return time if all(visited) else -1
+
+    def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
+
+        adj = defaultdict(list)
+
+        for u,v,w in times: 
+            adj[u].append((v, w))
+        
+        min_heap = [(0, k)] 
+        heapq.heapify(min_heap)
+        visited = [False]*n 
+        dist = [float('inf')]*n 
+        dist[k-1] = 0 
+
+        while min_heap: 
+            time, node = heapq.heappop(min_heap)
+            if visited[node-1]: 
+                continue
+            visited[node-1] = True 
+            if all(visited): 
+                return time 
+            for nei, w in adj[node]: 
+                if not visited[nei-1] and w+time < dist[nei-1]: 
+                    dist[nei-1] = w+time
+                heapq.heappush(min_heap, (time+w, nei))
+        
+        return time if all(visited) else -1
+        
